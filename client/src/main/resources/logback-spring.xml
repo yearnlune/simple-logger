@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <springProperty scope="context" name="applicationName" source="spring.application.name" />
+    <springProperty scope="context" name="rabbitmqAddress" source="simple-log.rabbitmq.address" defaultValue="rabbitmq:5672" />
+    <springProperty scope="context" name="rabbitmqHost" source="simple-log.rabbitmq.host" defaultValue="rabbitmq" />
+    <springProperty scope="context" name="rabbitmqPort" source="simple-log.rabbitmq.port" defaultValue="5672" />
+    <springProperty scope="context" name="rabbitmqUsername" source="simple-log.rabbitmq.username" defaultValue="guest" />
+    <springProperty scope="context" name="rabbitmqPassword" source="simple-log.rabbitmq.password" defaultValue="guest" />
+    <springProperty scope="context" name="enableRabbit" source="simple-log.rabbitmq.enable" defaultValue="false" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}][%-5level][%logger{36}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <if condition='property("enableRabbit").equals("true")'>
+        <then>
+            <appender name="RABBIT_LOG" class="org.springframework.amqp.rabbit.logback.AmqpAppender">
+                <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                    <providers>
+                        <mdc/>
+                        <timestamp/>
+                        <context/>
+                        <logLevel/>
+                        <loggerName/>
+
+                        <threadName/>
+                        <message/>
+                        <stackTrace/>
+
+                        <logstashMarkers/>
+                        <arguments/>
+                    </providers>
+                </encoder>
+                <host>${rabbitmqHost}</host>
+                <port>${rabbitmqPort}</port>
+                <username>${rabbitmqUsername}</username>
+                <password>${rabbitmqPassword}</password>
+                <exchangeName>simple-log.topic</exchangeName>
+                <routingKeyPattern>simple-log.spring.${applicationName}</routingKeyPattern>
+                <generateId>true</generateId>
+                <applicationId>${HOSTNAME}</applicationId>
+                <charset>UTF-8</charset>
+                <durable>true</durable>
+                <deliveryMode>NON_PERSISTENT</deliveryMode>
+                <declareExchange>true</declareExchange>
+            </appender>
+        </then>
+    </if>
+    <root>
+        <appender-ref ref="STDOUT" />
+        <if condition='property("enableRabbit").equals("true")'>
+            <then>
+                <appender-ref ref="RABBIT_LOG" />
+            </then>
+        </if>
+    </root>
+
+</configuration>
