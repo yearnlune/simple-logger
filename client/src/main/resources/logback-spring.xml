@@ -6,6 +6,8 @@
     <springProperty scope="context" name="rabbitmqPort" source="simple-log.rabbitmq.port" defaultValue="5672" />
     <springProperty scope="context" name="rabbitmqUsername" source="simple-log.rabbitmq.username" defaultValue="guest" />
     <springProperty scope="context" name="rabbitmqPassword" source="simple-log.rabbitmq.password" defaultValue="guest" />
+    <springProperty scope="context" name="rabbitmqExchange" source="simple-log.rabbitmq.exchange" defaultValue="simple-log.topic" />
+    <springProperty scope="context" name="rabbitmqRoutingKeyPattern" source="simple-log.rabbitmq.routing-key.pattern" defaultValue="simple-log.*" />
     <springProperty scope="context" name="enableRabbit" source="simple-log.rabbitmq.enable" defaultValue="false" />
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -36,8 +38,10 @@
                 <port>${rabbitmqPort}</port>
                 <username>${rabbitmqUsername}</username>
                 <password>${rabbitmqPassword}</password>
-                <exchangeName>simple-log.topic</exchangeName>
-                <routingKeyPattern>simple-log.spring.${applicationName}</routingKeyPattern>
+                <exchangeName>${rabbitmqExchange}</exchangeName>
+                <exchangeType>topic</exchangeType>
+                <routingKeyPattern>${rabbitmqRoutingKeyPattern}</routingKeyPattern>
+                <virtualHost>/</virtualHost>
                 <generateId>true</generateId>
                 <applicationId>${HOSTNAME}</applicationId>
                 <charset>UTF-8</charset>
