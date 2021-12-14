@@ -77,7 +77,6 @@ public class RabbitConfig {
 	@Bean
 	@DependsOn({"simpleLogTopicExchange", "simpleLogQueue", "simpleLogBinding"})
 	public AmqpAdmin amqpAdmin() {
-		System.out.println("amqpAdmin");
 		AmqpAdmin amqpAdmin = new RabbitAdmin(connectionFactory());
 		amqpAdmin.declareExchange(simpleLogTopicExchange());
 		amqpAdmin.declareQueue(simpleLogQueue());
