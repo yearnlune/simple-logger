@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: client-test
+  config:
+    activate:
+      on-profile: create
+simple-log:
+  rabbitmq:
+    create: true
+    enable: true
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    queue: simple-log.test
+    stats-port: 15672
+server:
+  port: 0
+logging:
+  level:
+    root: info
+    org.springframework.boot.autoconfigure: error
