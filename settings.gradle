@@ -1,3 +1,5 @@
 rootProject.name = 'simple-logger'
 
 include 'client'
+include 'example:simple-logger-client'
+findProject(':example:simple-logger-client')?.name = 'simple-logger-client'

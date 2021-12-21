@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: simple-logger-client
+logging:
+  level:
+    root: info
+    org.springframework.boot.autoconfigure: error
+simple-log:
+  rabbitmq:
+    create: true
+    enable: true
+server:
+  port: 8282

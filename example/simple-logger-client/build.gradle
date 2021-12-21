@@ -1,0 +1,24 @@
+buildscript {
+    ext {
+        springBootVersion = "2.6.1"
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    implementation(project(":client"))
+    implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
+
+    compileOnly('org.projectlombok:lombok:1.18.14')
+    annotationProcessor('org.projectlombok:lombok:1.18.14')
+}
+
